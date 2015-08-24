@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" 
+				xmlns:h="http://java.sun.com/jsf/html" 
+				xmlns:f="http://java.sun.com/jsf/core"
+				xmlns:p="http://primefaces.org/ui"
+				xmlns:ui="http://java.sun.com/jsf/facelets" >
+			
+	<h:form prependId="false">
+
+		<div class="fb-login-button" scope="email" autologoutlink="true"></div>
+
+		<p:remoteCommand name="onFacebookLogin" action="#{userController.onFacebookLogin}" />
+		
+		<p:remoteCommand name="onFacebookLogout" action="#{userController.onFacebookLogout}" />
+
+	</h:form>
+	
+	<div id="fb-root"></div>
+	
+	<script>
+			window.fbAsyncInit = function() {
+			
+				/* Initial context */
+				FB.init({appId:'278446012237737', status:true, cookie:true, xfbml:true, oauth:true});
+				
+				/* Login event*/
+				FB.Event.subscribe('auth.login', function(response) {
+					  
+					var uid = response.authResponse.userID;
+					  
+					FB.api('/me', function(response) {
+					        
+						onFacebookLogin({	uid:uid, 
+											name:response.name, 
+											email:response.email, 
+											firstName:response.first_name,
+											lastName:response.last_name	});
+				      });
+					  
+				});
+				
+				/* Login event*/
+				FB.Event.subscribe('auth.logout', function(response) {
+					  
+					var uid = response.authResponse.userID;
+					  
+					FB.api('/me', function(response) {
+					        
+						onFacebookLogout();
+				      });
+					  
+				});
+				
+			};
+			
+			(function(d) {
+				var js, id = 'facebook-jssdk';
+				if (d.getElementById(id)) {
+					return;
+				}
+				js = d.createElement('script');
+				js.id = id;
+				js.async = true;
+				js.src = "//connect.facebook.net/pt_BR/all.js";
+				d.getElementsByTagName('head')[0].appendChild(js);
+			}(document));
+			
+	</script>
+		
+</ui:composition>
+

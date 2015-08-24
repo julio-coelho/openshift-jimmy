@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+
+	<style type="text/css">
+		.center {
+			margin: auto;
+			width: 50%;
+		}
+	</style>
+
+	<title>Cadastro de Usuário</title>
+
+</h:head>
+<h:body>
+
+	<h:form id="form">
+	
+		<!-- Mensagens -->
+		<p:growl id="messages" showDetail="true" sticky="true" autoUpdate="true" />
+
+		<h:panelGrid columns="2" cellpadding="5" style="margin:0 auto;">
+
+			<h:outputText value="Nome : " />
+			<p:inputText id="name" value="#{userController.user.name}" />
+			
+			<h:outputText value="Sobrenome : " />
+			<p:inputText id="sobrenome" value="#{userController.user.sobrenome}" />
+			
+			<h:outputText value="Email : " />
+			<p:inputText id="email" value="#{userController.user.email}" />
+			
+			<h:outputText value="Provider : " />
+			<h:outputText value="#{userController.user.provider.name}"/>
+			
+			<h:outputText value="UID : " />
+			<h:outputText value="#{userController.user.uid}"/>
+			
+		</h:panelGrid>
+
+	</h:form>
+
+</h:body>
+</html>

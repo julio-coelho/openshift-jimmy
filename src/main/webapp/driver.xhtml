@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+
+	<style type="text/css">
+		.center {
+			margin: auto;
+			width: 50%;
+		}
+	</style>
+
+	<title>Cadastro de Motoristas</title>
+
+</h:head>
+<h:body>
+
+	<h:form id="form">
+		
+		<!-- Mensagens -->
+		<p:growl id="messages" showDetail="true" sticky="true" autoUpdate="true" />
+
+		<!-- Tabela com Cadastrados -->
+		<div class="center">		
+		<p:dataTable id="table_driver" var="driver_item" value="#{driverController.drivers}" paginator="true" rows="5"
+			paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+		
+			<f:facet name="header">Motoristas</f:facet>
+			
+			<p:column style="width:40px">
+				<p:commandButton id="selectButton" update=":form:driverDetailDialog" oncomplete="driverDetailDialog.show()" icon="ui-icon-search" title="Visualizar o motorista">
+					<f:setPropertyActionListener target="#{driverController.selectedDriver}" value="#{driver_item}" />
+				</p:commandButton>
+			</p:column>
+			
+			<p:column>
+				<f:facet name="header">ID</f:facet>
+				#{driver_item.id}
+			</p:column>
+			<p:column>
+				<f:facet name="header">Nome</f:facet>
+				#{driver_item.name}
+			</p:column>
+			<p:column>
+				<f:facet name="header">CPF</f:facet>
+				#{driver_item.cpf}
+			</p:column>
+			<p:column>
+				<f:facet name="header">Ativo</f:facet>
+				<p:selectBooleanCheckbox value="#{driver_item.active}"  disabled="true"/>
+			</p:column>
+			
+		
+		</p:dataTable>	
+		
+		<!-- Command de Inserção -->
+		<p:commandButton id="insertButton" update=":form:driverInsertDialog" oncomplete="driverInsertDialog.show()" icon="ui-icon-plus" title="Insert" />
+		
+		</div>	
+		
+		<!-- Dialog de Detalhes -->
+		<p:dialog header="Detalhes do Motorista" widgetVar="driverDetailDialog" resizable="false" id="driverDetailDialog" showEffect="fade"
+			hideEffect="explode" modal="true">
+
+			<h:panelGrid id="display_detail" columns="2" cellpadding="5" style="margin:0 auto;">
+
+				<h:outputText value="Id: " />
+				<h:outputText value="#{driverController.selectedDriver.id}" />
+				
+				<h:outputText value="Name: " />
+				<h:outputText value="#{driverController.selectedDriver.name}" />
+				
+				<h:outputText value="CPF: " />
+				<h:outputText value="#{driverController.selectedDriver.cpf}" />
+				
+				<h:outputText value="Ativo: " />
+				<p:selectBooleanCheckbox value="#{driverController.selectedDriver.active}" />
+
+			</h:panelGrid>
+
+		</p:dialog>
+		
+		<!-- Dialog de Insert -->
+		<p:dialog header="Novo Motorista" widgetVar="driverInsertDialog" resizable="false" id="driverInsertDialog" showEffect="fade"
+			hideEffect="explode" modal="true">
+
+			<h:panelGrid id="display_insert" columns="2" cellpadding="5" style="margin:0 auto;">
+				
+				<h:outputText value="Name: " />
+				<p:inputText value="#{driverController.driver.name}" />
+				
+				<h:outputText value="CPF: " />
+				<p:inputText value="#{driverController.driver.cpf}" />
+				
+				<h:outputText value="Ativo: " />
+				<p:selectBooleanCheckbox value="#{driverController.driver.active}" />
+
+				<p:commandButton icon="ui-icon-check" action="#{driverController.save}" update=":form:table_driver" oncomplete="driverInsertDialog.hide()" />
+
+			</h:panelGrid>
+
+		</p:dialog>		
+	
+	</h:form>
+
+</h:body>
+</html>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html" xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+
+	<style type="text/css">
+		.center {
+			margin: auto;
+			width: 50%;
+		}
+	</style>
+	
+	<title>Cadastro de Caminhões</title>
+	
+</h:head>
+<h:body>
+
+	<h:form id="form">
+
+		<!-- Mensagens -->
+		<p:growl id="messages" showDetail="true" sticky="true" autoUpdate="true" />
+
+		<!-- Tabela com Cadastrados -->
+		<div class="center">
+		<p:dataTable id="table_truck" var="truck_item" value="#{truckController.trucks}" paginator="true" rows="5"
+			paginatorTemplate="{FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}">
+
+			<f:facet name="header">Caminhões</f:facet>
+
+			<p:column style="width:40px">
+				<p:commandButton id="selectButton" update=":form:truckDetailDialog" oncomplete="truckDetailDialog.show()" icon="ui-icon-search" title="View">
+					<f:setPropertyActionListener value="#{truck_item}" target="#{truckController.selectedTruck}" />
+				</p:commandButton>
+			</p:column>
+
+			<p:column>
+				<f:facet name="header">
+					<h:outputText value="Frota" />
+				</f:facet>
+				<h:outputText value="#{truck_item.frota}" />
+			</p:column>
+
+			<p:column>
+				<f:facet name="header">
+					<h:outputText value="Placa" />
+				</f:facet>
+				<h:outputText value="#{truck_item.placa}" />
+			</p:column>
+
+		</p:dataTable>
+
+		<!-- Command de Inserção -->
+		<p:commandButton id="insertButton" update=":form:truckInsertDialog" oncomplete="truckInsertDialog.show()" icon="ui-icon-plus" title="Insert" />
+		
+		</div>
+
+		<!-- Dialog de Detalhes -->
+		<p:dialog header="Detalhes do Caminhão" widgetVar="truckDetailDialog" resizable="false" id="truckDetailDialog" showEffect="fade"
+			hideEffect="explode" modal="true">
+
+			<h:panelGrid id="display_detail" columns="2" cellpadding="5" style="margin:0 auto;">
+
+				<h:outputText value="Frota :" />
+				<h:outputText value="#{truckController.selectedTruck.frota}" style="font-weight:bold" />
+
+				<h:outputText value="Placa :" />
+				<h:outputText value="#{truckController.selectedTruck.placa}" style="font-weight:bold" />
+
+			</h:panelGrid>
+
+		</p:dialog>
+
+		<!-- Dialog de Insert -->
+		<p:dialog header="Cadastro de Caminhão" widgetVar="truckInsertDialog" resizable="false" id="truckInsertDialog" showEffect="fade"
+			hideEffect="explode" modal="true">
+
+			<h:panelGrid id="display_insert" columns="2" cellpadding="5" style="margin:0 auto;">
+
+				<h:outputText value="Frota :" />
+				<p:inputText value="#{truckController.truck.frota}" />
+
+				<h:outputText value="Placa :" />
+				<p:inputText value="#{truckController.truck.placa}" />
+
+				<p:commandButton icon="ui-icon-check" action="#{truckController.save}" update=":form:table_truck" oncomplete="truckInsertDialog.hide()" />
+
+			</h:panelGrid>
+
+		</p:dialog>
+
+	</h:form>
+
+</h:body>
+</html>
